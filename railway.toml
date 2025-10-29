@@ -1,0 +1,12 @@
+# Railway Deployment Configuration
+version: 1
+
+services:
+  backend:
+    build:
+      dockerfile: Dockerfile
+    env:
+      NODE_ENV: production
+      PORT: ${{ PORT }}
+      MONGODB_URI: ${{ MONGODB_URI }}
+      FRONTEND_URL: ${{ FRONTEND_URL }}

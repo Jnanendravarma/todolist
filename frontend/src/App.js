@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 
+// API URL from environment variable or fallback to localhost
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8080';
+
 function App() {
   const [todos, setTodos] = useState([]);
   const [inputValue, setInputValue] = useState('');
@@ -9,7 +12,7 @@ function App() {
 
   // Load todos on component mount
   useEffect(() => {
-    fetch('http://localhost:8080/todos')
+    fetch(`${API_URL}/todos`)
       .then(response => {
         if (!response.ok) throw new Error('Network response was not ok');
         return response.json();
@@ -46,7 +49,7 @@ function App() {
     }
 
     // Send to backend
-    fetch('http://localhost:8080/todos', {
+    fetch(`${API_URL}/todos`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ text })
@@ -72,7 +75,7 @@ function App() {
       return;
     }
 
-    fetch(`http://localhost:8080/todos/${todo._id}`, {
+    fetch(`${API_URL}/todos/${todo._id}`, {
       method: 'DELETE'
     })
       .then(response => response.json())
@@ -111,7 +114,7 @@ function App() {
       return;
     }
 
-    fetch(`http://localhost:8080/todos/${todo._id}`, {
+    fetch(`${API_URL}/todos/${todo._id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ text: todo.text })

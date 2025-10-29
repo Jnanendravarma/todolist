@@ -2,13 +2,26 @@ const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 
+// Load environment variables
+require('dotenv').config();
+
 const app = express();
-app.use(cors());
+
+// CORS configuration for production
+const corsOptions = {
+  origin: process.env.NODE_ENV === 'production' 
+    ? [process.env.FRONTEND_URL || 'https://your-frontend-url.netlify.app']
+    : ['http://localhost:3000'],
+  credentials: true
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
-// Connect to MongoDB with database name 'work'
+// Connect to MongoDB with environment variable
+const mongoUri = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/work';
 console.log('Attempting to connect to MongoDB...');
-mongoose.connect('mongodb://127.0.0.1:27017/work')
+mongoose.connect(mongoUri)
   .then(() => {
     console.log('MongoDB connected successfully');
   })
@@ -81,6 +94,7 @@ app.delete('/todos/:id', async (req, res) => {
   }
 });
 
-app.listen(8080, () => {
-  console.log('Server started running on port 8080');
+const PORT = process.env.PORT || 8080;
+app.listen(PORT, () => {
+  console.log(`Server started running on port ${PORT}`);
 });
