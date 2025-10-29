@@ -1,0 +1,32 @@
+body {
+  background-color: #f9f9f9;
+}
+
+.todo-container {
+  max-width: 500px;
+  margin: 50px auto;
+  padding: 20px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.todo-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.todo-item:last-child {
+  border-bottom: none;
+}
+
+.todo-actions button {
+  margin-left: 5px;
+}
+
+.edit-input {
+  width: 100%;
+}
