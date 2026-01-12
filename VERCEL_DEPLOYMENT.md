@@ -1,24 +1,23 @@
-# Vercel Deployment Guide
+# Vercel Deployment Guide - Supabase Version
 
 ## Prerequisites
 1. Vercel account (free tier available)
-2. MongoDB Atlas account (free tier available)
-3. Git repository (GitHub, GitLab, or Bitbucket)
+2. Supabase account (free tier available) ✅ Already set up
+3. Git repository (GitHub) ✅ https://github.com/Jnanendravarma/todolist
 
 ## Project Structure
 This is a full-stack application with:
-- **Backend**: Express.js API (Node.js)
+- **Backend**: Express.js API (Node.js) with Supabase
 - **Frontend**: React application
-- **Database**: MongoDB
+- **Database**: Supabase (PostgreSQL)
 
 ## Deployment Steps
 
-### 1. Database Setup (MongoDB Atlas)
-1. Create free MongoDB Atlas account
-2. Create a new cluster
-3. Create database user
-4. Whitelist IP addresses (0.0.0.0/0 for all IPs)
-5. Get connection string
+### 1. Database Setup (Supabase) ✅ DONE
+Your Supabase project is already configured:
+- Project ID: itdwjxkyqwlileayofcw
+- URL: https://itdwjxkyqwlileayofcw.supabase.co
+- Table: `todos` (needs to be created if not done yet)
 
 ### 2. Deploy to Vercel
 
@@ -40,10 +39,15 @@ vercel
 Set these in Vercel dashboard (Project → Settings → Environment Variables):
 
 **Production Environment Variables:**
-- `MONGODB_URI` = Your MongoDB Atlas connection string
+- `MONGODB_URI` = Your MongoDB Atl (Backend):**
+- `SUPABASE_URL` = https://itdwjxkyqwlileayofcw.supabase.co
+- `SUPABASE_ANON_KEY` = Your Supabase anon key (from .env file)
 - `NODE_ENV` = production
 - `FRONTEND_URL` = Your Vercel app URL (e.g., https://your-project.vercel.app)
+- `PORT` = 5000
 
+**Frontend Environment Variables:**
+- `REACT_APP_API_URL` = /api (for production, relative path
 **Frontend automatically detects backend API at `/api` routes**
 
 ### 4. Project Configuration
@@ -81,20 +85,21 @@ Once deployed, your API will be available at:
 Create `.env` files from examples:
 - `backend/.env` (from `backend/.env.example`)
 - `frontend/.env` (from `frontend/.env.example`)
-
-## Troubleshooting
+Supabase credentials and table exists
+3. **API not found**: Ensure routes start with `/api`
+4. **Supabase errors**: Check Row Level Security policies are enabled
 
 ### Common Issues:
 1. **CORS errors**: Check FRONTEND_URL environment variable
 2. **Database connection**: Verify MongoDB Atlas connection string
 3. **API not found**: Ensure routes start with `/api`
 
-### Logs:
-- Check Vercel function logs in dashboard
-- Use `/api/health` endpoint to verify backend status
+### Supabase**: 500MB database, 2GB bandwidth, 50MB file storage
 
-## Free Tier Limits
-- **Vercel**: 100GB bandwidth, 6,000 minutes execution time
+## Scaling
+- Upgrade Vercel plan for more resources
+- Use Supabase Pro for larger databases and more resources
+- Consider Redis for caching (Vercel KV or Supabase Edge Functionsnutes execution time
 - **MongoDB Atlas**: 512MB storage, M0 cluster
 
 ## Scaling

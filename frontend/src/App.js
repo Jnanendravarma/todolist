@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 
-// API URL from environment variable or fallback to localhost
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+// API URL: Use environment variable or fallback to /api for production (Vercel)
+const API_URL = process.env.REACT_APP_API_URL || '/api';
 
 function App() {
   const [todos, setTodos] = useState([]);
