@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 
 // API URL from environment variable or fallback to localhost
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8080/api';
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
 
 function App() {
   const [todos, setTodos] = useState([]);
@@ -19,8 +19,9 @@ function App() {
       })
       .then(data => {
         const formattedTodos = data.map(todo => ({
-          _id: todo._id,
-          text: todo.text,
+          id: todo.id,
+          text: todo.title,
+          completed: todo.completed || false,
           editing: false
         }));
         setTodos(formattedTodos);
@@ -52,12 +53,12 @@ function App() {
     fetch(`${API_URL}/todos`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ text })
+      body: JSON.stringify({ title: text })
     })
       .then(response => response.json())
       .then(data => {
-        if (data.todo) {
-          setTodos([...todos, { _id: data.todo._id, text: data.todo.text, editing: false }]);
+        if (data && data.id) {
+          setTodos([...todos, { id: data.id, text: data.title, completed: data.completed || false, editing: false }]);
           setInputValue('');
         } else {
           showError('Failed to add todo');
@@ -69,18 +70,18 @@ function App() {
   const deleteTodo = (index) => {
     hideError();
     const todo = todos[index];
-    if (!todo._id) {
+    if (!todo.id) {
       const newTodos = todos.filter((_, i) => i !== index);
       setTodos(newTodos);
       return;
     }
 
-    fetch(`${API_URL}/todos/${todo._id}`, {
+    fetch(`${API_URL}/todos/${todo.id}`, {
       method: 'DELETE'
     })
       .then(response => response.json())
       .then(data => {
-        if (data.message === "Deleted successfully") {
+        if (data.message === "Todo deleted") {
           const newTodos = todos.filter((_, i) => i !== index);
           setTodos(newTodos);
         } else {
@@ -107,24 +108,24 @@ function App() {
     hideError();
     const todo = todos[index];
     
-    if (!todo._id) {
+    if (!todo.id) {
       const newTodos = [...todos];
       newTodos[index].editing = false;
       setTodos(newTodos);
       return;
     }
 
-    fetch(`${API_URL}/todos/${todo._id}`, {
+    fetch(`${API_URL}/todos/${todo.id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ text: todo.text })
+      body: JSON.stringify({ title: todo.text, completed: todo.completed })
     })
       .then(response => response.json())
       .then(data => {
-        if (data.todo) {
+        if (data && data.id) {
           const newTodos = [...todos];
           newTodos[index].editing = false;
-          newTodos[index].text = data.todo.text;
+          newTodos[index].text = data.title;
           setTodos(newTodos);
         } else {
           showError('Failed to update todo');
@@ -165,7 +166,7 @@ function App() {
       
       <ul className="list-unstyled">
         {todos.map((todo, index) => (
-          <li key={todo._id || index} className="todo-item">
+          <li key={todo.id || index} className="todo-item">
             {todo.editing ? (
               <>
                 <input

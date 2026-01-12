@@ -1,10 +1,10 @@
 {
   "name": "backend",
-  "version": "1.0.0",
-  "description": "",
+  "version": "2.0.0",
+  "description": "Supabase Todo Backend API",
   "license": "ISC",
   "author": "",
-  "type": "commonjs",
+  "type": "module",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -12,6 +12,7 @@
     "dev": "nodemon server.js"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.90.1",
     "cars": "^1.1.6",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
