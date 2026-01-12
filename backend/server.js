@@ -9,14 +9,14 @@ import todoRoutes from "./routes/todoRoutes.js";
 
 const app = express();
 
-// CORS configuration for Vercel deployment
+// CORS configuration for Railway + Vercel deployment
 const corsOptions = {
-  origin: process.env.NODE_ENV === 'production' 
-    ? [
-        process.env.FRONTEND_URL || 'https://your-project.vercel.app',
-        /\.vercel\.app$/,  // Allow all Vercel domains
-      ]
-    : ['http://localhost:3000', 'http://localhost:3001'],
+  origin: [
+    'http://localhost:3000',
+    'http://localhost:3001',
+    'https://todolist-app-rosy-delta.vercel.app',
+    /\.vercel\.app$/,  // Allow all Vercel domains
+  ],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
